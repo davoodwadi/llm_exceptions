@@ -148,7 +148,6 @@ def md_to_html(md):
 
 # client = Fireworks(api_key=os.environ.get('FIREWORKS_API_KEY'))
 def get_error_messages_8b(error, HF_TOKEN=None, show_html=True):
-  print(f'HF_TOKEN: {HF_TOKEN}')
   # print(error)
   headers = {"Authorization": f"Bearer {HF_TOKEN}"}
   url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
@@ -190,6 +189,8 @@ Your response must be short and concrete.
   data = requests.post(url, json=body, headers=headers)
   if not data.ok:
     print('\nUnable to contact {url}')
+    print(f'Your HF_TOKEN: {HF_TOKEN}')
+    print('Please check if you set it correctly.')
     return error + '\nUnable to contact {url}'
   else:
     content = json.loads(data.content)[0]['generated_text']
