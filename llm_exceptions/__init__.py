@@ -1,5 +1,5 @@
 """LLM Exceptions Jupyter Magic"""
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 import sys
 # from .llm_exceptions import LLMExceptions
 from .llm_exceptions import llm_handler
