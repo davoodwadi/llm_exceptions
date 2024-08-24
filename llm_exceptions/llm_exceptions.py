@@ -208,7 +208,7 @@ Your response must be short and concrete.
 
 def llm_handler(self, etype, value, tb, tb_offset=None, kernel=None, HF_TOKEN=None, **kwargs):
 
-  tail = kernel.history_manager.get_tail(include_latest=True)
+  tail = list(kernel.history_manager.get_tail(include_latest=True))
   cell_input = tail[-1][2]
   # print(f'cell input: {cell_input}')
   # print('-'*50)
