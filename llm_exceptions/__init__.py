@@ -1,20 +1,16 @@
 """LLM Exceptions Jupyter Magic"""
-# __version__ = '0.0.2'
+import os
 import sys
-# from .llm_exceptions import LLMExceptions
+
 from .llm_exceptions import llm_handler
 from functools import partial
 
 import IPython
-# from IPython.core.magic_arguments import (
-#     argument, magic_arguments, parse_argstring)
 
+HF_TOKEN = os.environ.get('HF_TOKEN')
+if not HF_TOKEN:
+    raise ValueError("HF_TOKEN is is not added as an environment variable.")
 
-# @magic_arguments()
-# @argument(
-#     '-v', '--show_html', default=False,
-#     help="Whether to show the LLM output as colored html or simple markdown"
-#     )
 def load_ipython_extension(ipython=None, show_html=True):
     if ipython is None:
         ipython = IPython.get_ipython()
@@ -22,10 +18,7 @@ def load_ipython_extension(ipython=None, show_html=True):
     if ipython is None:
         raise RuntimeError("Can't load llm_exceptions. No IPython kernel found.")
 
-    print(show_html)
-    # args = parse_argstring(load_ipython_extension, 'line')
-    # print(args)
-    ipython.set_custom_exc((Exception,), partial(llm_handler, kernel = ipython, show_html=False))
+    ipython.set_custom_exc((Exception,), partial(llm_handler, kernel = ipython, show_html=False, HF_TOKEN=HF_TOKEN))
     print('llm_exceptions loaded successfully!')
     # ipython.register_magics(LLMExceptions)
 

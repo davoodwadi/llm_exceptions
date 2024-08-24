@@ -3,6 +3,8 @@ import traceback
 from IPython.display import Markdown, display_markdown, display, HTML
 import re
 import os
+import requests
+import json
 
 import html
 from markdown import markdown
@@ -23,7 +25,7 @@ from IPython.core.magic_arguments import (
 import traceback
 from functools import partial
 
-from fireworks.client import Fireworks
+# from fireworks.client import Fireworks
 
 
 def get_chunks(s):
@@ -144,22 +146,52 @@ def md_to_html(md):
   return html_content
 
 
-client = Fireworks(api_key=os.environ.get('FIREWORKS_API_KEY'))
-def get_error_messages_405(error, show_html=True):
+# client = Fireworks(api_key=os.environ.get('FIREWORKS_API_KEY'))
+def get_error_messages_8b(error, HF_TOKEN=None, show_html=True):
   # print(error)
-  messages = [
-      {'role':'system', 'content':'You are a helpful code debugger. I will give you an error that I just received from my code. First, you will repeat the error. and then you explain the steps to debug the error. Feel free to output any code that would fix the error. Your response must be short and concrete.'},
-      {'role':'user', 'content':f'```{error}```'},
+  headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+  url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
+  # start: set up prompts for Llama3-8b-instruct
+  systemTemplate = "<|start_header_id|>system<|end_header_id|>\n{text}<|eot_id|>\n\n"
+  systemMessage = '''You are a helpful python code debugger. 
+I will give you the code that I input and the error that I just received from my code. 
+First, you will repeat the error. and then you explain the steps to debug the error. 
+Feel free to output any code that would fix the error. 
+Your response must be short and concrete.
+'''
+  systemPrompt = systemTemplate.format(text=systemMessage)
+  userTemplate = '<|start_header_id|>user<|end_header_id|>\n{text}<|eot_id|>\n\n'
+  assistantTag = '<|start_header_id|>assistant<|end_header_id|>\n'
 
-  ]
-  response = client.chat.completions.create(
+  prompt = systemPrompt + userTemplate.format(text=error) + assistantTag
+  # end: set up prompts for Llama3-8b-instruct
+
+  # messages = [
+  #     {'role':'system', 'content':'You are a helpful code debugger. I will give you an error that I just received from my code. First, you will repeat the error. and then you explain the steps to debug the error. Feel free to output any code that would fix the error. Your response must be short and concrete.'},
+  #     {'role':'user', 'content':f'```{error}```'},
+
+  # ]
+  # response = client.chat.completions.create(
   # model="accounts/fireworks/models/llama-v3p1-405b-instruct",
-  model="accounts/fireworks/models/llama-v3p1-8b-instruct",
-  max_tokens= 16384,
-  temperature= 0.01,
-  messages= messages
-  )
-  content = response.choices[0].message.content
+  # model="accounts/fireworks/models/llama-v3p1-8b-instruct",
+  # max_tokens= 16384,
+  # temperature= 0.01,
+  # messages= messages
+  # )
+  # content = response.choices[0].message.content
+  body = {
+    "inputs": prompt,
+    'parameters': {
+        # temperature: 0.0001,
+        'max_new_tokens': 1000,
+        'return_full_text': False,
+  }}
+  data = requests.post(url, json=body, headers=headers)
+  if not data.ok:
+    print('\nUnable to contact {url}')
+    return error + '\nUnable to contact {url}'
+  else:
+    content = json.loads(data.content)[0]['generated_text']
   if show_html:
     html = md_to_html(content)
     # display_markdown(md)
@@ -172,7 +204,7 @@ def get_error_messages_405(error, show_html=True):
 
 
 
-def llm_handler(self, etype, value, tb, tb_offset=None, kernel=None, **kwargs):
+def llm_handler(self, etype, value, tb, tb_offset=None, kernel=None, HF_TOKEN=None, **kwargs):
 
   tail = kernel.history_manager.get_tail(include_latest=True)
   cell_input = tail[-1][2]
@@ -184,18 +216,19 @@ def llm_handler(self, etype, value, tb, tb_offset=None, kernel=None, **kwargs):
   stack = traceback.extract_tb(tb, limit=None)
   # print(f'Exception: {etype} \nvalue: {value}\ntraceback: {stack}')
   # print('-'*50)
+
   try:
     md = Markdown('**LLM:**')
     display_markdown(md)
-    llm_input = f'''I input the code:
+    llm_input = f'''Input code:
 {cell_input}
-I get the error
+Error:
 {s}
 '''
     # print('-'*50)
     # print(llm_input)
     # print('-'*50)
-    resp = get_error_messages_405(llm_input, **kwargs)
+    resp = get_error_messages_8b(llm_input, HF_TOKEN=HF_TOKEN, **kwargs)
     # print(resp)
   except:
     pass
