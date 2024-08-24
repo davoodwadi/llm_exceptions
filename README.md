@@ -94,7 +94,3 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 ## Acknowledgements
 
 This package uses large language models provided by Hugging Face. Make sure to sign up on their platform to obtain the necessary API token.
-
-```
-
-```
