@@ -1,4 +1,6 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+readme_file = Path("README.md").read_text()
 
 setup(
     name='llm_exceptions',
@@ -7,6 +9,8 @@ setup(
     author='Davood Wadi',
     author_email='davoodwadi@gmail.com',
     url='https://github.com/davoodwadi/llm_exceptions',
+    long_description_content_type='text/markdown',
+    long_description=readme_file,
     packages=find_packages(),
     install_requires=[
         'ipython',
