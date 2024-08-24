@@ -28,7 +28,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Framework :: Jupyter',
         'Framework :: IPython',
-        'License :: OSI Approved :: Apache-2.0 license',
+        'License :: OSI Approved :: Apache Software License',
     ],
     python_requires='>=3.6',
 )
