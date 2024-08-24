@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
 from pathlib import Path
-from llm_exceptions import __version__ as v
 
 readme_file = Path("README.md").read_text()
 
 setup(
     name='llm_exceptions',
-    version=v,
+    version='0.0.2',
     description='LLM explains stack trace for all exceptions. It automatically takes your input code and the error and tries to give a solution.',
     author='Davood Wadi',
     author_email='davoodwadi@gmail.com',
