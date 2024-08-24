@@ -66,15 +66,14 @@ Once the extension is loaded, simply run your code as usual. If an exception occ
    ZeroDivisionError: division by zero
    ```
 
-   ````**LLM Explanation**:
-   The error `ZeroDivisionError` occurs because you are attempting to divide a number by zero, which is mathematically undefined. To fix this error, ensure that the divisor `b` is not zero before performing the division.```
-   ````
+   > **LLM Explanation**:
+   > The error `ZeroDivisionError` occurs because you are attempting to divide a number by zero, which is mathematically undefined. To fix this error, ensure that the divisor `b` is not zero before performing the division.
 
 ## Citations
 
 If you use **LLM Exceptions** in your research or project, please consider citing it as follows:
 
-````
+```
 @software{llm_exceptions,
 author = {Davood Wadi},
 title = {LLM Exceptions: Automatic Stack Trace Analysis and Solutions},
@@ -95,4 +94,7 @@ Contributions are welcome! Please feel free to submit a Pull Request or open an 
 ## Acknowledgements
 
 This package uses large language models provided by Hugging Face. Make sure to sign up on their platform to obtain the necessary API token.
-````
+
+```
+
+```
