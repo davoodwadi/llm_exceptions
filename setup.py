@@ -5,7 +5,7 @@ readme_file = Path("README.md").read_text()
 
 setup(
     name='llm_exceptions',
-    version='0.0.3',
+    version='0.0.4',
     description='LLM explains stack trace for all exceptions. It automatically takes your input code and the error and tries to give a solution.',
     author='Davood Wadi',
     author_email='davoodwadi@gmail.com',
@@ -16,7 +16,6 @@ setup(
     install_requires=[
         'ipython',
         'markdown',
-        'fireworks-ai'
     ],
     entry_points={
         'jupyter.commands': [

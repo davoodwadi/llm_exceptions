@@ -148,6 +148,7 @@ def md_to_html(md):
 
 # client = Fireworks(api_key=os.environ.get('FIREWORKS_API_KEY'))
 def get_error_messages_8b(error, HF_TOKEN=None, show_html=True):
+  print(f'HF_TOKEN: {HF_TOKEN}')
   # print(error)
   headers = {"Authorization": f"Bearer {HF_TOKEN}"}
   url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
@@ -230,8 +231,9 @@ Error:
     # print('-'*50)
     resp = get_error_messages_8b(llm_input, HF_TOKEN=HF_TOKEN, **kwargs)
     # print(resp)
-  except:
-    pass
+  except Exception as e:
+    print('Cannot get LLM solution:')
+    print(e)
     # stack = traceback.extract_tb(tb, limit=None)
     # print('-'*50)
     # print(f'Exception: {etype} \nvalue: {value}\ntraceback: {stack}')
