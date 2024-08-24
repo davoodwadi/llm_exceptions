@@ -18,9 +18,11 @@ pip install llm-exceptions
 
 ## Setup
 
-To use the package, you'll need to set the `HF_TOKEN` environment variable with your Hugging Face API token. This token is required to access the large language models. The default model is `meta-llama/Meta-Llama-3-8B-Instruct`.
+To use the package, you'll first need a Hugging Face API token. If you don't have a token, you can get one by signing up on [Hugging Face](https://huggingface.co/). The token will give you acces to the underlying LLM as an API. The default model is `meta-llama/Meta-Llama-3-8B-Instruct`.
 
-You can set the environment variable in your terminal like this:
+Then set the `HF_TOKEN` environment variable with your Hugging Face API token. You can set the environment variable in your terminal like this:
+
+### MacOS/Linux
 
 ```bash
 export HF_TOKEN='your_hugging_face_token'
@@ -53,7 +55,7 @@ To use **LLM Exceptions** in Google Colab, follow these steps:
 
     Or,
 
-    ii. You can set the `HF_TOKEN` environment variable with your Hugging Face API token directly in a cell (This is _less_ safe):
+    ii. You can set the `HF_TOKEN` environment variable with your Hugging Face API token directly in a cell (this is _less_ safe):
 
     ```python
     import os
