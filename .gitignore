@@ -1,3 +1,7 @@
+# local builds
+build
+dist
+*.egg-info
 # MacOS
 .DS_Store
 # Byte-compiled / optimized / DLL files
